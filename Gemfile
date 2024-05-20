@@ -28,4 +28,7 @@ end
 
 group :development do
   gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
+
+  # Show database columns and indexes inside files
+  gem "annotate", "~> 3.2"
 end
