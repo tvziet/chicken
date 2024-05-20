@@ -19,6 +19,9 @@ gem "image_processing", "~> 1.2"
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
+##### ADDITIONAL FUNCTIONS #####
+gem "dotenv-rails", "~> 3.1"
+
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
 end
