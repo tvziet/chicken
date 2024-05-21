@@ -26,6 +26,7 @@
 #
 class User < ApplicationRecord
   before_validation :normalize_blank_name_to_nil
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
