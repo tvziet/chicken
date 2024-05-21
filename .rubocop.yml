@@ -1,0 +1,95 @@
+inherit_mode:
+  merge:
+    - Exclude
+
+inherit_gem:
+  standard: config/base.yml
+
+require:
+  - rubocop-rails
+  - rubocop-performance
+  - standard
+
+AllCops:
+  TargetRubyVersion: 3.1.4
+  Exclude:
+    - "vendor/**/*"
+    - "db/schema.rb"
+    - "db/seeds.rb"
+    - "db/migrate/*"
+    - "bin/*"
+    - "lib/tasks/*"
+    - "config/initializers/*"
+    - "Rakefile"
+    - "tmp/*"
+  UseCache: false
+
+Rails:
+  Enabled: true
+Rails/Output:
+  Enabled: true
+Rails/Date:
+  Enabled: true
+Rails/FilePath:
+  Enabled: false
+Rails/FindBy:
+  Enabled: true
+Rails/FindEach:
+  Enabled: true
+Rails/PluralizationGrammar:
+  Enabled: true
+Rails/ScopeArgs:
+  Enabled: true
+Rails/TimeZone:
+  Enabled: true
+Rails/ActiveRecordCallbacksOrder:
+  Enabled: true
+Rails/AfterCommitOverride:
+  Enabled: false
+Rails/FindById:
+  Enabled: false
+Rails/Inquiry:
+  Enabled: false
+Rails/MailerName:
+  Enabled: false
+Rails/MatchRoute:
+  Enabled: false
+Rails/NegateInclude:
+  Enabled: false
+Rails/Pluck:
+  Enabled: false
+Rails/PluckInWhere:
+  Enabled: false
+Rails/RenderInline:
+  Enabled: false
+Rails/RenderPlainText:
+  Enabled: false
+Rails/ShortI18n:
+  Enabled: false
+Rails/SquishedSQLHeredocs:
+  Enabled: false
+Rails/WhereExists:
+  Enabled: false
+Rails/WhereNot:
+  Enabled: false
+Rails/HasAndBelongsToMany:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  Exclude:
+    - "config/environments/*"
+    - "config/*"
+    - "config.ru"
+
+Style/BlockComments:
+  Exclude:
+    - "spec/*"
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: space
+  EnforcedStyleForEmptyBraces: no_space
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  EnforcedStyle: no_space
+  EnforcedStyleForEmptyBrackets: no_space

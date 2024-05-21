@@ -25,7 +25,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_21_224714) do
     t.string "zipcode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["short_name"], name: "index_organizations_on_short_name"
+    t.index ["short_name"], name: "index_organizations_on_short_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
