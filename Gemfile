@@ -20,7 +20,11 @@ gem "image_processing", "~> 1.2"
 gem "rack-cors"
 
 ##### ADDITIONAL FUNCTIONS #####
+# Environment variable and configuration management
 gem "dotenv-rails", "~> 3.1"
+
+# User management and login workflow
+gem "devise", '>= 4.7.1'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
