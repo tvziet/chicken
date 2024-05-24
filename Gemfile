@@ -26,6 +26,9 @@ gem 'dotenv-rails', '~> 3.1'
 # User management and login workflow
 gem 'devise', '>= 4.7.1'
 
+# Version API management
+gem 'versionist', '~> 2.0', '>= 2.0.1'
+
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
 
