@@ -86,6 +86,10 @@ Style/BlockComments:
   Exclude:
     - "spec/*"
 
+Style/ArgumentsForwarding:
+  Exclude:
+    - app/services/base_service.rb
+
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: space
   EnforcedStyleForEmptyBraces: no_space
