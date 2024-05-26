@@ -2,7 +2,7 @@
 #
 # Table name: organizations
 #
-#  id         :bigint           not null, primary key
+#  id         :uuid             not null, primary key
 #  city       :string
 #  email      :string
 #  name       :string
@@ -16,11 +16,13 @@
 #
 # Indexes
 #
+#  index_organizations_on_email       (email)
+#  index_organizations_on_name        (name)
 #  index_organizations_on_short_name  (short_name) UNIQUE
 #
 class Organization < ApplicationRecord
-  validates :name, presence: true
-  validates :short_name, presence: true, format: /\A[a-z0-9_]+\z/i, uniqueness: true
+  validates :name, presence: true, uniqueness: true
+  validates :short_name, format: /\A[a-z0-9_]+\z/i, uniqueness: true, if: -> { short_name.present? }
   validates :url, format: { with: URI::DEFAULT_PARSER.make_regexp, message: "it should look like 'https://www.example.com'" }, allow_blank: true
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "it should look like 'test@example.com'" }, allow_blank: true
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "it should look like 'test@example.com'" }, allow_blank: true, uniqueness: true
 end

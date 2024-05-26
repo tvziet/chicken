@@ -2,7 +2,7 @@
 #
 # Table name: users
 #
-#  id                     :bigint           not null, primary key
+#  id                     :uuid             not null, primary key
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
 #  email                  :string           default(""), not null
@@ -18,11 +18,13 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  organization_id        :integer
+#  role_id                :integer
 #
 # Indexes
 #
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_role_id               (role_id)
 #
 class User < ApplicationRecord
   before_validation :normalize_blank_name_to_nil
@@ -35,12 +37,19 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is not a valid email address' }
   validate :password_complexity
 
+  belongs_to :organization, optional: true
+  accepts_nested_attributes_for :organization
+
   def display_name
     name.presence || 'Name Not Provided'
   end
 
   def formatted_email
     email.downcase.gsub(/^(.{4})/, '****')
+  end
+
+  def role
+    Role.find_by(id: role_id)
   end
 
   private
