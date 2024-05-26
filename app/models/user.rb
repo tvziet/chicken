@@ -32,7 +32,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :validatable
 
-  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is not a valid email address' }
   validate :password_complexity
 
   def display_name
@@ -52,6 +52,6 @@ class User < ApplicationRecord
   def password_complexity
     return if password.blank? || password =~ /(?=.*?[#?!@$%^&*\-;,.()=+|:])/
 
-    errors.add :password, 'Complexity requirement not met. Please use at least one special character.'
+    errors.add :password, 'complexity requirement not met. Please use at least one special character.'
   end
 end
