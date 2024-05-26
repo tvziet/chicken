@@ -29,6 +29,9 @@ gem 'devise', '>= 4.7.1'
 # Version API management
 gem 'versionist', '~> 2.0', '>= 2.0.1'
 
+# Serializer for JSON output
+gem 'fast_jsonapi', '~> 1.5'
+
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
 
