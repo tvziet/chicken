@@ -16,7 +16,7 @@
 #
 # Indexes
 #
-#  index_organizations_on_short_name  (short_name)
+#  index_organizations_on_short_name  (short_name) UNIQUE
 #
 class Organization < ApplicationRecord
   validates :name, presence: true
