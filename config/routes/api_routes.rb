@@ -5,9 +5,7 @@ module ApiRoutes
     router.instance_exec do
       namespace :api do
         api_version(module: 'V1', header: { name: 'X-API-VERSION', value: 'v1' }) do
-          devise_for :users, controllers: {
-            sessions: 'users/sessions'
-          }
+          post '/users', to: 'users#create'
         end
       end
     end
