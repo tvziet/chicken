@@ -6,6 +6,7 @@ module ApiRoutes
       namespace :api do
         api_version(module: 'V1', header: { name: 'X-API-VERSION', value: 'v1' }) do
           post '/users', to: 'users#create'
+          get '/roles', to: 'roles#index'
         end
       end
     end
