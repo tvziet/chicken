@@ -32,6 +32,9 @@ gem 'versionist', '~> 2.0', '>= 2.0.1'
 # Serializer for JSON output
 gem 'fast_jsonapi', '~> 1.5'
 
+# For pagination
+gem 'pagy', '~> 8.4'
+
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
 
