@@ -1,0 +1,12 @@
+vi:
+  activerecord:
+    errors:
+      parameters_missing: "Thiếu tham số."
+      record_existed: "%{record} đã tồn tại."
+      record_invalid: "%{record} không hợp lệ."
+      record_not_found: "Không tìm thấy %{record}."
+      statement_invalid: "Lệnh không hợp lệ."
+  errors:
+    forbidden: "Truy cập bị từ chối."
+    missing_confirm_token: "Thiếu mã xác nhận."
+    missing_token: "Thiếu mã token."

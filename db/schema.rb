@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_26_225755) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_30_010128) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -26,8 +26,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_225755) do
     t.string "zipcode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_organizations_on_email"
-    t.index ["name"], name: "index_organizations_on_name"
+    t.index ["email"], name: "index_organizations_on_email", unique: true
+    t.index ["name"], name: "index_organizations_on_name", unique: true
     t.index ["short_name"], name: "index_organizations_on_short_name", unique: true
   end
 
@@ -35,6 +35,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_225755) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_roles_on_name", unique: true
   end
 
   create_table "user_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
