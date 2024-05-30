@@ -35,6 +35,9 @@ gem 'fast_jsonapi', '~> 1.5'
 # For pagination
 gem 'pagy', '~> 8.4'
 
+# For internationalize locale
+gem 'rails-i18n', '~> 7.0', '>= 7.0.9'
+
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
 

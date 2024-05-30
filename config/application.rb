@@ -42,5 +42,9 @@ module Chicken
     config.api_only = true
 
     config.autoload_paths += Dir["#{config.root}/config/routes"]
+
+    config.i18n.available_locales = [:en, :vi]
+    config.i18n.default_locale = :en
+    config.i18n.fallbacks = [:en]
   end
 end
