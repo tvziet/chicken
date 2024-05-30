@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', :as => :rails_health_check
 
   extend ApiRoutes unless ENV['ATTACHED_API'].to_i.zero?
+  extend AdminRoutes unless ENV['ATTACHED_ADMIN'].to_i.zero?
 end
