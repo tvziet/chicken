@@ -18,7 +18,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  organization_id        :integer
-#  role_id                :integer
+#  role_id                :uuid
 #
 # Indexes
 #
@@ -27,6 +27,10 @@
 #  index_users_on_role_id               (role_id)
 #
 class User < ApplicationRecord
+  LENGTH_EMAIL_PART = 4
+  DEFAULT_DISPLAY_NAME = 'Name Not Provided'.freeze
+  EMAIL_SYMBOL = '@'.freeze
+
   before_validation :normalize_blank_name_to_nil
 
   # Include default devise modules. Others available are:
@@ -34,22 +38,25 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :validatable
 
-  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is not a valid email address' }
+  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP,
+                                                                                     message: 'is not a valid email address' }
   validate :password_complexity
 
   belongs_to :organization, optional: true
   accepts_nested_attributes_for :organization
 
   def display_name
-    name.presence || 'Name Not Provided'
+    name.presence || DEFAULT_DISPLAY_NAME
   end
 
   def formatted_email
-    email.downcase.gsub(/^(.{4})/, '****')
+    email_part, domain_part = email.downcase.split(EMAIL_SYMBOL)
+    masked_email = (email_part.length >= LENGTH_EMAIL_PART) ? email_part.gsub(/^(.{LENGTH_EMAIL_PART})/, '****') : email_part.gsub(/./, '*')
+    masked_email + EMAIL_SYMBOL + domain_part
   end
 
   def role
-    Role.find_by(id: role_id)
+    Role.find(role_id) if role_id
   end
 
   private

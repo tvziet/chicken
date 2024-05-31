@@ -26,7 +26,23 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_role_id               (role_id)
 #
-class UserSerializer
-  include FastJsonapi::ObjectSerializer
-  attributes :email, :name
+
+FactoryBot.define do
+  factory :user do
+    sequence(:email) { |n| "user#{n}@example.com" }
+    password { 'password123' }
+    password_confirmation { 'password123' }
+    name { 'John Doe' }
+    current_sign_in_at { Time.zone.now }
+    current_sign_in_ip { '127.0.0.1' }
+    last_sign_in_at { Time.zone.now }
+    last_sign_in_ip { '127.0.0.1' }
+    remember_created_at { Time.zone.now }
+    reset_password_sent_at { Time.zone.now }
+    reset_password_token { SecureRandom.hex(10) }
+    sign_in_count { 1 }
+    uid { SecureRandom.uuid }
+    association :organization
+    role_id { SecureRandom.uuid }
+  end
 end
