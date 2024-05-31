@@ -70,4 +70,7 @@ end
 group :test do
   # More concise test ("should") matchers
   gem 'shoulda-matchers', '~> 6.2'
+
+  # For code coverage analysis
+  gem 'simplecov', '~> 0.22.0'
 end
