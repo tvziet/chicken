@@ -16,9 +16,7 @@
 #
 # Indexes
 #
-#  index_organizations_on_email       (email) UNIQUE
-#  index_organizations_on_name        (name) UNIQUE
-#  index_organizations_on_short_name  (short_name) UNIQUE
+#  index_organizations_on_name_and_short_name_and_email  (name,short_name,email) UNIQUE
 #
 
 FactoryBot.define do
