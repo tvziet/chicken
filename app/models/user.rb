@@ -51,7 +51,7 @@ class User < ApplicationRecord
 
   def formatted_email
     email_part, domain_part = email.downcase.split(EMAIL_SYMBOL)
-    masked_email = (email_part.length >= LENGTH_EMAIL_PART) ? email_part.gsub(/^(.{LENGTH_EMAIL_PART})/, '****') : email_part.gsub(/./, '*')
+    masked_email = (email_part.length >= LENGTH_EMAIL_PART) ? email_part.gsub(/^(.{#{LENGTH_EMAIL_PART}})/, '****') : email_part.gsub(/./, '*')
     masked_email + EMAIL_SYMBOL + domain_part
   end
 
