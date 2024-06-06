@@ -3,7 +3,7 @@ module Api
     class RolesController < ApplicationController
       def index
         roles = Role.order(name: :asc)
-        render json: RoleSerializer.new(roles).serialized_json, status: :ok
+        render json: json_with_pagination(data: roles), status: :ok
       end
     end
   end

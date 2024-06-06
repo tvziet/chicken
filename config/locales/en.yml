@@ -1,12 +1,24 @@
 en:
   activerecord:
     errors:
-      parameters_missing: Missing parameters.
+      parameters_missing: "Missing parameters."
       record_existed: The %{record} is existed.
       record_invalid: The %{record} is invalid.
       record_not_found: The %{record} is not found.
-      statement_invalid: The statement is invalid.
+      statement_invalid: "The statement is invalid."
   errors:
     forbidden: Forbidden.
     missing_confirm_token: Missing confirm token.
     missing_token: Missing token.
+  admin:
+    roles:
+      create:
+        success: "Role was successfully created."
+      update:
+        success: "Role was successfully updated."
+      destroy:
+        success: "Role was successfully destroyed."
+  api:
+    users:
+      create:
+        success: "User was successfully registered."

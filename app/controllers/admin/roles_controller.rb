@@ -1,28 +1,33 @@
 module Admin
   class RolesController < BaseController
-    before_action :set_role, only: %i[show update]
+    before_action :set_role, only: %i[show update destroy]
 
     def index
       roles = Role.order(name: :asc)
-      render json: RoleSerializer.new(roles).serialized_json, status: :ok
+      render json: json_with_pagination(data: roles), status: :ok
     end
 
     def show
-      render json: RoleSerializer.new(@role).serialized_json, status: :ok
+      render json: json_with_success(data: set_role), status: :ok
     end
 
     def create
       role = Role.create!(role_params)
-      render json: RoleSerializer.new(role).serialized_json, status: :created
+      render json: json_with_success(message: I18n.t('admin.roles.create.success'), data: role), status: :created
     rescue ActiveRecord::RecordInvalid => e
       handle_record_invalid(e)
     end
 
     def update
-      @role.update!(role_params)
-      render json: RoleSerializer.new(@role).serialized_json, status: :ok
+      set_role.update!(role_params)
+      render json: json_with_success(message: I18n.t('admin.roles.update.success'), data: set_role), status: :ok
     rescue ActiveRecord::RecordInvalid => e
       handle_record_invalid(e)
+    end
+
+    def destroy
+      set_role.destroy
+      render json: json_with_success(message: I18n.t('admin.roles.destroy.success')), status: :ok
     end
 
     private
@@ -32,7 +37,7 @@ module Admin
     end
 
     def set_role
-      @role = Role.find(params[:id])
+      Role.find(params[:id])
     rescue ActiveRecord::RecordNotFound => e
       handle_record_not_found(e)
     end

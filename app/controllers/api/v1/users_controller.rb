@@ -5,7 +5,7 @@ module Api
         result = UserCreatorService.call(user_params)
         return render json: result, status: :unprocessable_entity if result.key?(:errors)
 
-        render json: UserSerializer.new(result[:data]).serialized_json, status: :created
+        render json: json_with_success(message: I18n.t('api.users.create.success'), data: result[:data]), status: :created
       end
 
       private
