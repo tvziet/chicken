@@ -16,13 +16,12 @@
 #
 # Indexes
 #
-#  index_organizations_on_email       (email) UNIQUE
-#  index_organizations_on_name        (name) UNIQUE
-#  index_organizations_on_short_name  (short_name) UNIQUE
+#  index_organizations_on_name_and_short_name_and_email  (name,short_name,email) UNIQUE
 #
 class Organization < ApplicationRecord
-  validates :name, presence: true, uniqueness: true
-  validates :short_name, format: /\A[a-z0-9_]+\z/i, uniqueness: true, if: -> { short_name.present? }
+  validates :name, presence: true
+  validates :short_name, format: /\A[a-z0-9_]+\z/i, if: -> { short_name.present? }
   validates :url, format: { with: URI::DEFAULT_PARSER.make_regexp, message: "it should look like 'https://www.example.com'" }, allow_blank: true
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "it should look like 'test@example.com'" }, allow_blank: true, uniqueness: true
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "it should look like 'test@example.com'" }, allow_blank: true
+  validates :name, uniqueness: { scope: [:short_name, :email], message: 'name, short_name and email combination must be unique' }
 end
