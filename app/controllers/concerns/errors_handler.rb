@@ -53,7 +53,7 @@ module ErrorsHandler
     message = exception.model ? I18n.t('activerecord.errors.record_not_found', record: humanized_model_name(I18n.t('activerecord.model_names.' + exception.model, default: exception.model))) : exception.message
     render json: json_with_error(
       message: message
-    ), status: :unprocessable_entity
+    ), status: :not_found
   end
 
   def handle_record_statement_invalid(exception)
