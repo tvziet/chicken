@@ -4,16 +4,15 @@ module ResponseHandler
   extend ActiveSupport::Concern
 
   def json_with_error(message: :fail, errors: nil)
+    formatted_errors = format_active_record_errors(errors)
     {
-      errors: format_active_record_errors(errors) || message
+      errors: formatted_errors.presence || message
     }
   end
 
   private
 
   def format_active_record_errors(errors)
-    return {} if errors.nil? || !errors.is_a?(Hash)
-
-    errors
+    (errors.nil? || !errors.is_a?(Hash)) ? {} : errors
   end
 end
