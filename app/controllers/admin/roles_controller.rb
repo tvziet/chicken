@@ -8,6 +8,7 @@ module Admin
     end
 
     def show
+      render json: RoleSerializer.new(@role).serialized_json, status: :ok
     end
 
     def create
