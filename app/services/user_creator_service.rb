@@ -12,12 +12,16 @@ class UserCreatorService < BaseService
       user = User.create!(params)
       # The user represents an organization
       if role.name == Role::ORG_USER.to_s
-        organization = Organization.find_or_create_by(email: params[:organization_attributes][:email], name: params[:organization_attributes][:name])
-        user.organization = organization
+        organization = Organization.find_or_create_by(email: params[:organization_attributes][:email],
+          name: params[:organization_attributes][:name],
+          short_name: params[:organization_attributes][:short_name])
+        if organization.persisted?
+          user.errors.add(:organization_id, message: 'already exists')
+        else
+          user.organization = organization
+        end
       end
-
-      # The user is an individual user
-      role.user_roles << UserRole.find_or_create_by(user: user, role: role) if role.name == Role::INDIVIDUAL_USER.to_s
+      role.user_roles << UserRole.find_or_create_by(user: user, role: role)
 
       success_response(user)
     end
