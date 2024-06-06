@@ -13,6 +13,6 @@
 #
 FactoryBot.define do
   factory :role do
-    name { "MyString" }
+    name { 'individual_user' }
   end
 end

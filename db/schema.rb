@@ -26,9 +26,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_010128) do
     t.string "zipcode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_organizations_on_email", unique: true
-    t.index ["name"], name: "index_organizations_on_name", unique: true
-    t.index ["short_name"], name: "index_organizations_on_short_name", unique: true
+    t.index ["name", "short_name", "email"], name: "index_organizations_on_name_and_short_name_and_email", unique: true
   end
 
   create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -63,7 +61,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_010128) do
     t.integer "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "role_id"
+    t.uuid "role_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"

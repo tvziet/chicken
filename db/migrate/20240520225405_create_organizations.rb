@@ -13,6 +13,6 @@ class CreateOrganizations < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    add_index :organizations, :short_name, unique: true
+    add_index :organizations, [:name, :short_name, :email], unique: true
   end
 end

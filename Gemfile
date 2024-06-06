@@ -60,14 +60,17 @@ group :development do
   gem 'awesome_print', '~> 1.9', '>= 1.9.2'
   # Static analysis / linter.
   gem 'rubocop'
-  # Rails add-on for static analysis.
+  # Rails add-on for static analysis
   gem 'rubocop-performance'
   gem 'rubocop-rails', '~> 2.25.0'
-  # Default rules for Rubocop.
+  # Default rules for Rubocop
   gem 'standard', '~> 1.36'
 end
 
 group :test do
   # More concise test ("should") matchers
   gem 'shoulda-matchers', '~> 6.2'
+
+  # For code coverage analysis
+  gem 'simplecov', '~> 0.22.0'
 end

@@ -1,10 +1,6 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      def new
-        @user = User.new
-      end
-
       def create
         result = UserCreatorService.call(user_params)
         return render json: result, status: :unprocessable_entity if result.key?(:errors)
@@ -15,7 +11,7 @@ module Api
       private
 
       def user_params
-        params.require(:user).permit(:email, :password, :name, :role_id, organization_attributes: [:email, :name])
+        params.require(:user).permit(:email, :password, :name, :role_id, organization_attributes: [:email, :name, :short_name])
       end
     end
   end
