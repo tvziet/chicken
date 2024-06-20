@@ -7,6 +7,7 @@
 #  current_sign_in_ip     :string
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  jti                    :string           not null
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :string
 #  name                   :string
@@ -23,10 +24,13 @@
 # Indexes
 #
 #  index_users_on_email                 (email) UNIQUE
+#  index_users_on_jti                   (jti) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_role_id               (role_id)
 #
 class User < ApplicationRecord
+  include Devise::JWT::RevocationStrategies::JTIMatcher
+
   LENGTH_EMAIL_PART = 4
   DEFAULT_DISPLAY_NAME = 'Name Not Provided'.freeze
   EMAIL_SYMBOL = '@'.freeze
@@ -36,7 +40,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :validatable
+    :recoverable, :rememberable, :validatable,
+    :jwt_authenticatable, jwt_revocation_strategy: self
 
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP,
                                                                                      message: 'is not a valid email address' }

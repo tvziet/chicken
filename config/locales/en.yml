@@ -22,3 +22,10 @@ en:
     users:
       create:
         success: "User was successfully registered."
+    sessions:
+      create:
+        success: "User was successfully logged in."
+      destroy:
+        success: "User was successfully logged out."
+        fail: "Couldn't find an active session."
+        invalid_token: "Invalid token."

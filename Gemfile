@@ -25,6 +25,7 @@ gem 'dotenv-rails', '~> 3.1'
 
 # User management and login workflow
 gem 'devise', '>= 4.7.1'
+gem 'devise-jwt', '~> 0.11.0'
 
 # Version API management
 gem 'versionist', '~> 2.0', '>= 2.0.1'

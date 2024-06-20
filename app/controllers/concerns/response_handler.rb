@@ -13,7 +13,7 @@ module ResponseHandler
   def json_with_success(message: nil, data: nil, options: {})
     {
       message: options[:message] || message || 'Success',
-      data: data ? serialize_data(data, options)[:data] : nil
+      data: data ? serialize_data(data, options) : nil
     }
   end
 
@@ -32,9 +32,9 @@ module ResponseHandler
 
   def serialize_data(data, options)
     serializer = options[:serializer] || "#{data.class}Serializer".constantize
-    return serializer.new(data).serializable_hash if serializer
-
-    data
+    meta_data = options.except(:serializer)
+    serializable_data = serializer ? serializer.new(data).serializable_hash[:data] : data
+    (meta_data.present? && serializable_data.present?) ? serializable_data.merge!(meta_data) : serializable_data
   end
 
   def pagination_json(data, custom_serializer: nil, options: {})
