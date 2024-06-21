@@ -3,10 +3,12 @@
 # Table name: users
 #
 #  id                     :uuid             not null, primary key
+#  confirmation_token     :string
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  is_verified            :boolean          default(FALSE)
 #  jti                    :string           not null
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :string
