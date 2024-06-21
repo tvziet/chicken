@@ -4,7 +4,8 @@ module Admin
 
     def index
       roles = Role.order(name: :asc)
-      render json: json_with_pagination(data: roles), status: :ok
+      pagy, data = pagy(roles, items: params[:per_page])
+      render json: json_with_pagination(data: data, options: pagy.vars), status: :ok
     end
 
     def show

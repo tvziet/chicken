@@ -38,20 +38,13 @@ module ResponseHandler
   end
 
   def pagination_json(data, custom_serializer: nil, options: {})
-    pagination =
-      if data.respond_to?(:cursor)
-        {
-          cursor: data.cursor
-        }
-      else
-        {
-          limit_value: (data.respond_to?(:limit_value) && data.limit_value) ? data.limit_value : 0,
-          current_page: data.respond_to?(:current_page) ? data.current_page : 1,
-          next_page: data.respond_to?(:next_page) ? data.next_page : nil,
-          prev_page: data.respond_to?(:prev_page) ? data.prev_page : nil,
-          total_pages: data.respond_to?(:total_pages) ? data.total_pages : 1
-        }
-      end
+    pagination = {
+      limit_value: options[:items].to_i,
+      current_page: options[:page],
+      next_page: (options[:page] < options[:count]) ? options[:page] + 1 : nil,
+      prev_page: (options[:page] > 1) ? options[:page] - 1 : nil,
+      total_pages: (options[:count].to_f / options[:items].to_i).ceil
+    }
 
     options = custom_serializer ? { each_serializer: custom_serializer }.merge(options) : options
 
