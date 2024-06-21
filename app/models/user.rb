@@ -3,10 +3,12 @@
 # Table name: users
 #
 #  id                     :uuid             not null, primary key
+#  confirmation_token     :string
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  is_verified            :boolean          default(FALSE)
 #  jti                    :string           not null
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :string
@@ -36,6 +38,7 @@ class User < ApplicationRecord
   EMAIL_SYMBOL = '@'.freeze
 
   before_validation :normalize_blank_name_to_nil
+  before_create :generate_confirmation_token
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -74,5 +77,9 @@ class User < ApplicationRecord
     return if password.blank? || password =~ /(?=.*?[#?!@$%^&*\-;,.()=+|:])/
 
     errors.add :password, 'complexity requirement not met. Please use at least one special character.'
+  end
+
+  def generate_confirmation_token
+    self.confirmation_token = SecureRandom.urlsafe_base64
   end
 end

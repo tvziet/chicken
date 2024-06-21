@@ -5,6 +5,8 @@ module Api
         result = UserCreatorService.call(user_params)
         return render json: result, status: :unprocessable_entity if result.key?(:errors)
 
+        UserMailer.with(user: result[:data]).verify_user.deliver_later
+
         render json: json_with_success(message: I18n.t('api.users.create.success'), data: result[:data]), status: :created
       end
 

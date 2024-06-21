@@ -29,3 +29,8 @@ en:
         success: "User was successfully logged out."
         fail: "Couldn't find an active session."
         invalid_token: "Invalid token."
+  controllers:
+    user_verifications:
+      verify_user:
+        success: "Your account verified"
+        fail: "Your account not verified"

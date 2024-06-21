@@ -39,6 +39,9 @@ gem 'pagy', '~> 8.4'
 # For internationalize locale
 gem 'rails-i18n', '~> 7.0', '>= 7.0.9'
 
+# For processing background jobs
+gem 'sidekiq', '~> 7.2'
+
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
 
@@ -66,6 +69,8 @@ group :development do
   gem 'rubocop-rails', '~> 2.25.0'
   # Default rules for Rubocop
   gem 'standard', '~> 1.36'
+  # Open email in browser instead of sending it
+  gem 'letter_opener', '~> 1.10'
 end
 
 group :test do

@@ -46,5 +46,10 @@ module Chicken
     config.i18n.available_locales = [:en, :vi]
     config.i18n.default_locale = :en
     config.i18n.fallbacks = [:en]
+
+    config.active_job.queue_adapter = :sidekiq
+
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
   end
 end
