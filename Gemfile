@@ -39,6 +39,9 @@ gem 'pagy', '~> 8.4'
 # For internationalize locale
 gem 'rails-i18n', '~> 7.0', '>= 7.0.9'
 
+# For processing background jobs
+gem 'sidekiq', '~> 7.2'
+
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
 

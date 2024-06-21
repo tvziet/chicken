@@ -291,6 +291,11 @@ GEM
       ffi (~> 1.12)
     shoulda-matchers (6.2.0)
       activesupport (>= 5.2.0)
+    sidekiq (7.2.4)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      rack (>= 2.2.4)
+      redis-client (>= 0.19.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -364,6 +369,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails (~> 2.25.0)
   shoulda-matchers (~> 6.2)
+  sidekiq (~> 7.2)
   simplecov (~> 0.22.0)
   standard (~> 1.36)
   tzinfo-data
