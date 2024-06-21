@@ -69,6 +69,8 @@ group :development do
   gem 'rubocop-rails', '~> 2.25.0'
   # Default rules for Rubocop
   gem 'standard', '~> 1.36'
+  # Open email in browser instead of sending it
+  gem 'letter_opener', '~> 1.10'
 end
 
 group :test do
