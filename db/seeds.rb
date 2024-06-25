@@ -7,6 +7,8 @@ if Rails.env.development?
   puts 'Creating roles...'
   organization_role = Role.create!(name: Role::ORG_USER)
   individual_role = Role.create!(name: Role::INDIVIDUAL_USER)
+  org_admin_role = Role.create!(name: Role::ORG_ADMIN)
+  super_admin_role = Role.create!(name: Role::SUPER_ADMIN)
 
   puts 'Creating individual users...'
   individual_user = User.build(email: 'individual@example.com',

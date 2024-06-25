@@ -19,6 +19,7 @@ class Role < ApplicationRecord
   INDIVIDUAL_USER = :individual_user
 
   VALID_ROLES = %w[org_admin super_admin org_user individual_user].freeze
+  REGISTERABLE_ROLES = %w[org_user individual_user].freeze
 
   TITLES = {
     org_admin: 'Organization Admin',

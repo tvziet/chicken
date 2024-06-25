@@ -27,7 +27,9 @@ module ResponseHandler
   private
 
   def format_active_record_errors(errors)
-    (errors.nil? || !errors.is_a?(Hash)) ? {} : errors
+    return {} if errors.blank? || (errors.blank? && !errors.is_a?(Hash))
+
+    errors
   end
 
   def serialize_data(data, options)
