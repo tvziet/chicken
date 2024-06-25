@@ -10,6 +10,12 @@ module Api
         render json: json_with_success(message: I18n.t('api.users.create.success'), data: result[:data]), status: :created
       end
 
+      def me
+        return handle_unauthorized unless current_user
+
+        render json: json_with_success(data: current_user)
+      end
+
       private
 
       def user_params
