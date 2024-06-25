@@ -20,7 +20,7 @@ module Api
           if params[:new_password].present? && !current_user.valid_password?(params[:current_password])
 
         return render json: json_with_error(message: I18n.t("api.users.update.fail"), errors: current_user.errors.messages), status: :unprocessable_entity \
-          unless current_user.update(email: params[:email], password: params[:new_password])
+          unless current_user.update(email: params[:email], password: params[:new_password], name: params[:name])
 
         render json: json_with_success(message: I18n.t("api.users.update.success"))
       end
