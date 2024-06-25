@@ -9,7 +9,7 @@ module Api
       def create
         user = User.find_for_authentication(email: params[:user][:email])
         if user&.valid_password?(sign_in_params[:password])
-          payload = { user_id: user.id, jti: user.jti, sub: user.id, scp: :api_user }
+          payload = { user_id: user.id, jti: user.jti, sub: user.id, scp: :user }
           token = encode_jwt(payload)
           render json: json_with_success(message: I18n.t('api.sessions.create.success'),
             data: user, options: { token: token }),

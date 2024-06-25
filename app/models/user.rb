@@ -64,7 +64,15 @@ class User < ApplicationRecord
   end
 
   def role
-    Role.find(role_id) if role_id
+    Role.find(role_id)
+  end
+
+  def role_name
+    role.name
+  end
+
+  def organization_name
+    organization.name if organization
   end
 
   private

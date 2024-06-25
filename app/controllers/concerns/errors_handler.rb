@@ -108,7 +108,7 @@ module ErrorsHandler
     ), status: :forbidden
   end
 
-  def handle_duplicate_record(exception)
+  def handle_duplicate_record
     render json: json_with_error(
       message: I18n.t('activerecord.errors.record_existed')
     ), status: :bad_request
@@ -118,5 +118,11 @@ module ErrorsHandler
     render json: json_with_error(
       message: exception.message
     ), status: :forbidden
+  end
+
+  def handle_unauthorized
+    render json: json_with_error(
+      message: I18n.t("api.sessions.destroy.fail")
+    ), status: :unauthorized
   end
 end

@@ -33,7 +33,12 @@
 class UserSerializer
   include FastJsonapi::ObjectSerializer
   attributes :email, :name, :is_verified
+
   attribute :role do |object|
-    object.role.name
+    object.role_name
+  end
+
+  attribute :organization_name do |object|
+    object.organization_name
   end
 end
