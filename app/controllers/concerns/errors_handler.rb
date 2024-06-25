@@ -56,13 +56,13 @@ module ErrorsHandler
     ), status: :not_found
   end
 
-  def handle_record_statement_invalid(exception)
+  def handle_record_statement_invalid
     render json: json_with_error(
       message: I18n.t('activerecord.errors.statement_invalid')
     ), status: :unprocessable_entity
   end
 
-  def handle_parameter_missing(exception)
+  def handle_parameter_missing
     render json: json_with_error(
       message: I18n.t('activerecord.errors.parameters_missing')
     ), status: :bad_request

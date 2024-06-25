@@ -38,6 +38,7 @@ class User < ApplicationRecord
   EMAIL_SYMBOL = '@'.freeze
 
   before_validation :normalize_blank_name_to_nil
+  before_validation :ensure_matching_roles
   before_create :generate_confirmation_token
 
   # Include default devise modules. Others available are:
@@ -46,8 +47,10 @@ class User < ApplicationRecord
     :recoverable, :rememberable, :validatable,
     :jwt_authenticatable, jwt_revocation_strategy: self
 
-  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP,
-                                                                                     message: 'is not a valid email address' }
+  validates :email, presence: true
+  validates :email, uniqueness: { case_sensitive: false },
+                    format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is not a valid email address' },
+                      if: -> { email.present? }
   validate :password_complexity
 
   belongs_to :organization, optional: true
@@ -89,5 +92,9 @@ class User < ApplicationRecord
 
   def generate_confirmation_token
     self.confirmation_token = SecureRandom.urlsafe_base64
+  end
+
+  def ensure_matching_roles
+    errors.add(:role_id, I18n.t("api.users.common.not_matching_role")) if Role::REGISTERABLE_ROLES.exclude?(role_name)
   end
 end

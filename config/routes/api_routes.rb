@@ -7,6 +7,7 @@ module ApiRoutes
         api_version(module: 'V1', header: { name: 'X-API-VERSION', value: 'v1' }) do
           post '/users', to: 'users#create'
           get '/me', to: 'users#me'
+          put '/current_user/profile', to: 'users#update'
           get '/roles', to: 'roles#index'
           devise_for :users, singular: :user, skip: %i[registrations passwords confirmations],
             path: '',

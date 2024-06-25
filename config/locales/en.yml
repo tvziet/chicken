@@ -22,6 +22,12 @@ en:
     users:
       create:
         success: "User was successfully registered."
+      update:
+        incorrect_current_password: "The current password is not correct or missing."
+        fail: "User was fail updated."
+        success: "User was successfully updated."
+      common:
+        not_matching_role: "The role is not matching. The role can only be individual user or as an user represents as an organization."
     sessions:
       create:
         success: "User was successfully logged in."
@@ -32,5 +38,5 @@ en:
   controllers:
     user_verifications:
       verify_user:
-        success: "Your account verified"
-        fail: "Your account not verified"
+        success: "Your account verified."
+        fail: "Your account not verified."
