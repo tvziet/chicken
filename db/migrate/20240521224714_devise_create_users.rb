@@ -35,7 +35,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
       ## Custom fields
       t.string :name
       t.string :uid
-      t.integer :organization_id
+      t.uuid :organization_id
 
 
       t.timestamps null: false

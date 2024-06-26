@@ -3,6 +3,7 @@ if Rails.env.development?
   UserRole.delete_all
   Role.delete_all
   User.delete_all
+  Organization.delete_all
 
   puts 'Creating roles...'
   organization_role = Role.create!(name: Role::ORG_USER)
@@ -28,4 +29,8 @@ if Rails.env.development?
   organization_user.save!
 
   UserRole.create(user: organization_user, role: organization_role)
+
+  puts 'Creating an organization...'
+  organization = Organization.create(name: 'Dream', short_name: 'DR', email: 'dream@co.ltd')
+  organization_user.update!(organization_id: organization.id)
 end

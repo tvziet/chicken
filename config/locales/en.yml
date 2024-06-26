@@ -26,6 +26,9 @@ en:
         incorrect_current_password: "The current password is not correct or missing."
         fail: "User was fail updated."
         success: "User was successfully updated."
+      switch_role:
+        no_change: "There is no change in role."
+        organization_exists: "The organization's information has been registered by another user."
       common:
         not_matching_role: "The role is not matching. The role can only be individual user or as an user represents as an organization."
     sessions:

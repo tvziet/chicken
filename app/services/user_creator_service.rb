@@ -16,7 +16,7 @@ class UserCreatorService < BaseService
           name: params[:organization_attributes][:name],
           short_name: params[:organization_attributes][:short_name])
         if organization.persisted?
-          user.errors.add(:organization_id, message: 'already exists')
+          user.errors.add(:organization, message: 'already exists')
         else
           user.organization = organization
         end

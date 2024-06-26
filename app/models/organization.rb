@@ -24,4 +24,6 @@ class Organization < ApplicationRecord
   validates :url, format: { with: URI::DEFAULT_PARSER.make_regexp, message: "it should look like 'https://www.example.com'" }, allow_blank: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "it should look like 'test@example.com'" }, allow_blank: true
   validates :name, uniqueness: { scope: [:short_name, :email], message: 'name, short_name and email combination must be unique' }
+
+  has_one :deputy, class_name: 'User'
 end

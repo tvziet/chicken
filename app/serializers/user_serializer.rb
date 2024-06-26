@@ -20,7 +20,7 @@
 #  uid                    :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  organization_id        :integer
+#  organization_id        :uuid
 #  role_id                :uuid
 #
 # Indexes
@@ -39,6 +39,6 @@ class UserSerializer
   end
 
   attribute :organization_name do |object|
-    object.organization_name
+    object.organization&.name
   end
 end

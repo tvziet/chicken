@@ -58,7 +58,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_21_065330) do
     t.string "last_sign_in_ip"
     t.string "name"
     t.string "uid"
-    t.integer "organization_id"
+    t.uuid "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "role_id"

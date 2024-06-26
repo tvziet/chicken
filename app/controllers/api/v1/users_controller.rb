@@ -1,7 +1,8 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_action :handle_unauthorized, unless: :current_user, only: %i[me update]
+      before_action :handle_unauthorized, unless: :current_user, only: %i[me update switch_role]
+      before_action :set_role, only: %i[switch_role]
       def create
         result = UserCreatorService.call(user_params)
         return render json: result, status: :unprocessable_entity if result.key?(:errors)
@@ -25,10 +26,34 @@ module Api
         render json: json_with_success(message: I18n.t("api.users.update.success"))
       end
 
+      def switch_role
+        # Check if the new role is within the role array that is allowed to be updated
+        return render json: json_with_error(message: I18n.t("api.users.common.not_matching_role")) \
+          if Role::REGISTERABLE_ROLES.exclude?(set_role.name)
+
+        result = if set_role.name == Role::ORG_USER.to_s
+                   SwitchRoleToOrgService.call(current_user, params[:organization_attributes], params[:new_role_id])
+                 else
+                   SwitchRoleToIndividualService.call(current_user, params[:new_role_id])
+                 end
+
+        return render json: json_with_error(errors: result[:errors]) if result.has_key?(:errors)
+
+        render json: json_with_success(data: result[:data])
+      end
+
       private
 
       def user_params
         params.require(:user).permit(:email, :password, :name, :role_id, organization_attributes: [:email, :name, :short_name])
+      end
+
+      def set_role
+        @set_role ||= begin
+                        Role.find(params[:new_role_id])
+                      rescue ActiveRecord::RecordNotFound => e
+                        handle_record_not_found(e)
+                      end
       end
     end
   end
