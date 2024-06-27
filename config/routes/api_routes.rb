@@ -8,13 +8,16 @@ module ApiRoutes
           post '/users', to: 'users#create'
           get '/me', to: 'users#me'
           put '/current_user/profile', to: 'users#update'
-          get '/roles', to: 'roles#index'
+
           devise_for :users, singular: :user, skip: %i[registrations passwords confirmations],
             path: '',
             path_names: {
               sign_in: 'login',
               sign_out: 'logout'
             }
+
+          get '/roles', to: 'roles#index'
+          put '/current_user/switch_role', to: 'users#switch_role'
         end
       end
     end

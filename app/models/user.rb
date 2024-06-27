@@ -20,7 +20,7 @@
 #  uid                    :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  organization_id        :integer
+#  organization_id        :uuid
 #  role_id                :uuid
 #
 # Indexes
@@ -74,8 +74,8 @@ class User < ApplicationRecord
     role.name
   end
 
-  def organization_name
-    organization.name if organization
+  def organization
+    Organization.find(organization_id) if role_name == Role::ORG_USER.to_s && organization_id.present?
   end
 
   private
