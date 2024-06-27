@@ -32,6 +32,9 @@ module Api
           if Role::REGISTERABLE_ROLES.exclude?(set_role.name)
 
         result = if set_role.name == Role::ORG_USER.to_s
+                   return render json: json_with_error(message: I18n.t("api.users.switch_role.missing_organization_attributes")), status: :unprocessable_entity \
+                     unless params[:organization_attributes]
+
                    SwitchRoleToOrgService.call(current_user, params[:organization_attributes], params[:new_role_id])
                  else
                    SwitchRoleToIndividualService.call(current_user, params[:new_role_id])
