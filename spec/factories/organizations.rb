@@ -22,5 +22,7 @@
 FactoryBot.define do
   factory :organization do
     sequence(:name) { |n| "Organization #{n}" }
+    sequence(:short_name) { |n| "ORG#{n}" }
+    sequence(:email) { |n| "email#{n}@example.com" }
   end
 end

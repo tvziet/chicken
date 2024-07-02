@@ -4,7 +4,7 @@ module Api
       before_action :handle_unauthorized, unless: :current_user, only: %i[me update switch_role]
       before_action :set_role, only: %i[switch_role]
       def create
-        result = UserCreatorService.call(user_params)
+        result = Users::UserCreatorService.call(user_params)
         return render json: result, status: :unprocessable_entity if result.key?(:errors)
 
         UserMailer.with(user: result[:data]).verify_user.deliver_later
@@ -35,9 +35,9 @@ module Api
                    return render json: json_with_error(message: I18n.t("api.users.switch_role.missing_organization_attributes")), status: :unprocessable_entity \
                      unless params[:organization_attributes]
 
-                   SwitchRoleToOrgService.call(current_user, params[:organization_attributes], params[:new_role_id])
+                   Users::SwitchRoleToOrgService.call(current_user, params[:organization_attributes], params[:new_role_id])
                  else
-                   SwitchRoleToIndividualService.call(current_user, params[:new_role_id])
+                   Users::SwitchRoleToIndividualService.call(current_user, params[:new_role_id])
                  end
 
         return render json: json_with_error(errors: result[:errors]) if result.has_key?(:errors)

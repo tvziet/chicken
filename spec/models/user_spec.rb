@@ -33,7 +33,8 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  subject { build(:user) }
+  let(:role) { create(:role, name: Role::INDIVIDUAL_USER) }
+  subject { build(:user, role_id: role.id) }
 
   context 'associations' do
     it { should belong_to(:organization).optional }
@@ -92,6 +93,26 @@ RSpec.describe User, type: :model do
       it 'raises an ActiveRecord::RecordNotFound error' do
         subject.role_id = SecureRandom.hex
         expect { subject.role }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe '#organization' do
+    let(:organization) { create(:organization) }
+
+    context 'when the role is an organization user' do
+      it 'returns the organization' do
+        subject.role_id = create(:role, name: Role::ORG_USER).id
+        subject.organization_id = organization.id
+        expect(subject.organization).to eq(organization)
+      end
+    end
+
+    context 'when the role is not an organization user' do
+      it 'returns nil' do
+        subject.role_id = role.id
+        subject.organization_id = organization.id
+        expect(subject.organization).to be_nil
       end
     end
   end

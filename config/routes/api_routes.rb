@@ -18,6 +18,10 @@ module ApiRoutes
 
           get '/roles', to: 'roles#index'
           put '/current_user/switch_role', to: 'users#switch_role'
+
+          resources :organizations, only: %i[index update] do
+            put '/transfer_representation', to: 'organizations#transfer_representation'
+          end
         end
       end
     end

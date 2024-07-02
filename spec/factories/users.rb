@@ -34,8 +34,8 @@
 FactoryBot.define do
   factory :user do
     sequence(:email) { |n| "user#{n}@example.com" }
-    password { 'password123' }
-    password_confirmation { 'password123' }
+    password { 'p@ssw0rd' }
+    password_confirmation { 'p@ssw0rd' }
     name { 'John Doe' }
     current_sign_in_at { Time.zone.now }
     current_sign_in_ip { '127.0.0.1' }
@@ -47,6 +47,5 @@ FactoryBot.define do
     sign_in_count { 1 }
     uid { SecureRandom.uuid }
     association :organization
-    role_id { SecureRandom.uuid }
   end
 end

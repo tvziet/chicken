@@ -20,9 +20,9 @@ RSpec.describe 'Admin::Roles', type: :request do
 
     it 'returns all roles order by name' do
       get admin_roles_path
-      expect(JSON.parse(response.body)['data'].size).to eq(2)
-      expect(JSON.parse(response.body)['data'][0]['attributes']['name']).to eq('individual_user')
-      expect(JSON.parse(response.body)['data'][1]['attributes']['name']).to eq('org_user')
+      expect(JSON.parse(response.body)['data']['items'].size).to eq(2)
+      expect(JSON.parse(response.body)['data']['items'][0]['attributes']['name']).to eq('individual_user')
+      expect(JSON.parse(response.body)['data']['items'][1]['attributes']['name']).to eq('org_user')
     end
   end
 
