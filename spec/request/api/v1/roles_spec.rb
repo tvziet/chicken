@@ -20,3 +20,4 @@ RSpec.describe 'Api::V1::Roles', type: :request do
     end
   end
 end
+
