@@ -10,7 +10,7 @@ module Users
 
     def call
       if user.role_id == new_role_id
-        user.errors.add(:new_role_id, I18n.t("api.users.switch_role.no_change"))
+        user.errors.add(:new_role_id, I18n.t('api.users.switch_role.no_change'))
         error_response(user.errors.messages)
       else
         ActiveRecord::Base.transaction do

@@ -52,8 +52,8 @@ RSpec.describe Users::SwitchRoleToOrgService do
           service.call
 
           expect(Organization.where(email: update_organization_attributes[:email],
-                                    name: update_organization_attributes[:name],
-                                    short_name: update_organization_attributes[:short_name]).count).to eq(1)
+            name: update_organization_attributes[:name],
+            short_name: update_organization_attributes[:short_name]).count).to eq(1)
         end
       end
     end

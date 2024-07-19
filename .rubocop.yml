@@ -81,6 +81,7 @@ Style/StringLiterals:
     - "config/environments/*"
     - "config/*"
     - "config.ru"
+    - "spec/*"
 
 Style/BlockComments:
   Exclude:

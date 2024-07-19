@@ -3,7 +3,7 @@ module Api
     class RolesController < ApplicationController
       def index
         roles = Role.order(name: :asc)
-        pagy, data = pagy(roles, items: params[:per_page])
+        pagy, data = pagy(roles, items: adjusted_per_page_param, page: adjusted_page_param)
         render json: json_with_pagination(data: data, options: pagy.vars), status: :ok
       end
     end

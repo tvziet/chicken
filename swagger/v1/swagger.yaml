@@ -1,0 +1,240 @@
+---
+openapi: 3.0.1
+info:
+  title: Chicken APIs
+  version: v1
+paths:
+  "/admin/roles":
+    get:
+      summary: Retrieves all roles
+      tags:
+      - Admin Interface - Role
+      parameters:
+      - name: page
+        in: query
+        description: current page number
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: number of items per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            attributes:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                              required:
+                              - name
+                          required:
+                          - id
+                          - type
+                          - attributes
+                      pagination:
+                        type: object
+                        properties:
+                          limit_value:
+                            type: integer
+                          current_page:
+                            type: integer
+                          next_page:
+                            type: integer
+                            x-nullable: true
+                          prev_page:
+                            type: integer
+                            x-nullable: true
+                          total_pages:
+                            type: integer
+                        required:
+                        - limit_value
+                        - current_page
+                        - total_pages
+                    required:
+                    - items
+                    - pagination
+                required:
+                - data
+    post:
+      summary: Creates a role
+      tags:
+      - Admin Interface - Role
+      parameters: []
+      responses:
+        '201':
+          description: Role created
+        '422':
+          description: Failure role created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+              - name
+  "/admin/roles/{id}":
+    get:
+      summary: Retrieves a role
+      tags:
+      - Admin Interface - Role
+      parameters:
+      - name: id
+        in: path
+        require: true
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Role found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      type:
+                        type: string
+                      attributes:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                        required:
+                        - name
+                    required:
+                    - id
+                    - type
+                    - attributes
+                required:
+                - data
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                required:
+                - errors
+  "/api/roles":
+    get:
+      summary: Retrieves all roles
+      tags:
+      - APIs
+      parameters:
+      - name: page
+        in: query
+        description: current page number
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: number of items per page
+        schema:
+          type: integer
+      - name: X-API-VERSION
+        in: header
+        description: current version of API
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            attributes:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                              required:
+                              - name
+                          required:
+                          - id
+                          - type
+                          - attributes
+                      pagination:
+                        type: object
+                        properties:
+                          limit_value:
+                            type: integer
+                          current_page:
+                            type: integer
+                          next_page:
+                            type: integer
+                            x-nullable: true
+                          prev_page:
+                            type: integer
+                            x-nullable: true
+                          total_pages:
+                            type: integer
+                        required:
+                        - limit_value
+                        - current_page
+                        - total_pages
+                    required:
+                    - items
+                    - pagination
+                required:
+                - data
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+- url: https://{stagingHost}
+  variables:
+    stagingHost:
+      default: staging.example.com
+  description: Staging server
+- url: https://{productionHost}
+  variables:
+    productionHost:
+      default: example.com
+  description: Production server

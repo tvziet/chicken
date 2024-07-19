@@ -14,8 +14,8 @@ module Users
         # The user represents an organization
         if role.name == Role::ORG_USER.to_s
           organization = Organization.find_or_create_by(email: params[:organization_attributes][:email],
-                                                        name: params[:organization_attributes][:name],
-                                                        short_name: params[:organization_attributes][:short_name])
+            name: params[:organization_attributes][:name],
+            short_name: params[:organization_attributes][:short_name])
           if organization.persisted?
             user.errors.add(:organization, message: 'already exists')
           else
