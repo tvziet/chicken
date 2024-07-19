@@ -49,8 +49,8 @@ class User < ApplicationRecord
 
   validates :email, presence: true
   validates :email, uniqueness: { case_sensitive: false },
-                    format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is not a valid email address' },
-                      if: -> { email.present? }
+    format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is not a valid email address' },
+    if: -> { email.present? }
   validate :password_complexity
 
   belongs_to :organization, optional: true
@@ -70,9 +70,7 @@ class User < ApplicationRecord
     Role.find(role_id)
   end
 
-  def role_name
-    role.name
-  end
+  delegate :name, to: :role, prefix: true
 
   def organization
     Organization.find(organization_id) if role_name == Role::ORG_USER.to_s && organization_id.present?
@@ -95,6 +93,6 @@ class User < ApplicationRecord
   end
 
   def ensure_matching_roles
-    errors.add(:role_id, I18n.t("api.users.common.not_matching_role")) if Role::REGISTERABLE_ROLES.exclude?(role_name)
+    errors.add(:role_id, I18n.t('api.users.common.not_matching_role')) if Role::REGISTERABLE_ROLES.exclude?(role_name)
   end
 end

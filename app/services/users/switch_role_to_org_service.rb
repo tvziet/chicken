@@ -11,7 +11,7 @@ module Users
 
     def call
       if organization_registered?
-        user.errors.add(:organization, I18n.t("api.users.switch_role.organization_registered"))
+        user.errors.add(:organization, I18n.t('api.users.switch_role.organization_registered'))
         error_response(user.errors.messages)
       else
         current_organization ? process_update_current_organization : process_create_current_organization
@@ -28,8 +28,8 @@ module Users
     # Check whether the organization's information has been registered by another user or not
     def organization_registered?
       Organization.exists?(email: organization_attributes[:email],
-                           name: organization_attributes[:name],
-                           short_name: organization_attributes[:short_name])
+        name: organization_attributes[:name],
+        short_name: organization_attributes[:short_name])
     end
 
     # If the current user already represents an organization, that organization's information will be updated
@@ -44,12 +44,12 @@ module Users
     def process_create_current_organization
       ActiveRecord::Base.transaction do
         # Create the organization and associate it with the user.
-        organization = user.create_organization(organization_attributes)
-    
+        user.create_organization(organization_attributes)
+
         # Clear existing roles and update the user's role.
         UserRole.where(user_id: user.id).destroy_all
         user.update!(role_id: new_role_id)
-    
+
         # Assign the new role to the user.
         UserRole.create(user_id: user.id, role_id: new_role_id)
       end

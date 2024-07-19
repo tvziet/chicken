@@ -3,6 +3,7 @@ class ApplicationController < ActionController::API
 
   include ResponseHandler
   include ErrorsHandler
+  include PaginationHandler
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 

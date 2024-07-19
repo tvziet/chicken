@@ -122,7 +122,7 @@ module ErrorsHandler
 
   def handle_unauthorized
     render json: json_with_error(
-      message: I18n.t("api.sessions.destroy.fail")
+      message: I18n.t('api.sessions.destroy.fail')
     ), status: :unauthorized
   end
 end

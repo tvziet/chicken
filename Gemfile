@@ -42,6 +42,10 @@ gem 'rails-i18n', '~> 7.0', '>= 7.0.9'
 # For processing background jobs
 gem 'sidekiq', '~> 7.2'
 
+# For document APIs
+gem 'rswag-api', '~> 2.13'
+gem 'rswag-ui', '~> 2.13'
+
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
 
@@ -53,6 +57,9 @@ group :development, :test do
   gem 'faker', '~> 3.3', '>= 3.3.1'
   # RSpec behavioral testing framework for Rails
   gem 'rspec-rails', '~> 6.1.2'
+
+  # For document APIs
+  gem 'rswag-specs', '~> 2.13'
 end
 
 group :development do
