@@ -146,6 +146,82 @@ paths:
                     type: string
                 required:
                 - errors
+    put:
+      summary: Updates a role
+      tags:
+      - Admin Interface - Role
+      parameters:
+      - name: id
+        in: path
+        require: true
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Role updated
+        '422':
+          description: Failure role updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        items:
+                          type: string
+                required:
+                - errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+              - name
+    delete:
+      summary: Deletes a role
+      tags:
+      - Admin Interface - Role
+      parameters:
+      - name: id
+        in: path
+        require: true
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Role deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    nullable: true
+                    example:
+                required:
+                - data
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                required:
+                - errors
   "/api/roles":
     get:
       summary: Retrieves all roles
