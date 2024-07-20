@@ -126,5 +126,80 @@ describe 'Roles Admin' do
         run_test!
       end
     end
+
+    put 'Updates a role' do
+      tags 'Admin Interface - Role'
+      produces 'application/json'
+      consumes 'application/json'
+      parameter name: :id, in: :path, type: :string, require: true
+      parameter name: :role, in: :body, schema: {
+        type: :object,
+        properties: {
+          name: { type: :string }
+        },
+        required: %w[name]
+      }
+
+      response '200', 'Role updated' do
+        let(:id) { create(:role, name: 'individual_user').id }
+        let(:role) do
+          {
+            name: 'org_user'
+          }
+        end
+        let(:params) { { role: role } }
+        run_test!
+      end
+      response '422', 'Failure role updated' do
+        schema type: :object,
+          properties: {
+            errors: {
+              type: :object,
+              properties: {
+                name: { type: :array, items: { type: :string } }
+              }
+            }
+          },
+          required: %w[errors]
+        let(:id) { create(:role, name: 'individual_user').id }
+        let(:role) do
+          {
+            name: 'teacher'
+          }
+        end
+        let(:params) { { role: role } }
+        run_test!
+      end
+    end
+
+    delete 'Deletes a role' do
+      tags 'Admin Interface - Role'
+      produces 'application/json'
+      parameter name: :id, in: :path, type: :string, require: true
+
+      response '200', 'Role deleted' do
+        schema type: :object,
+          properties: {
+            data: {
+              type: :string,
+              nullable: true,
+              example: nil
+            }
+          },
+          required: %w[data]
+
+        let(:id) { create(:role, name: 'individual_user').id }
+        run_test!
+      end
+      response '404', 'Role not found' do
+        schema type: :object,
+          properties: {
+            errors: { type: :string }
+          },
+          required: %w[errors]
+        let(:id) { 'invalid' }
+        run_test!
+      end
+    end
   end
 end

@@ -1,5 +1,6 @@
 module Admin
   class RolesController < BaseController
+    # before_action :authenticate_user!, only: %i[create update destroy]
     before_action :set_role, only: %i[show update destroy]
 
     def index
