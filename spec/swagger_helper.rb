@@ -49,7 +49,16 @@ RSpec.configure do |config|
           },
           description: 'Production server'
         }
-      ]
+      ],
+      components: {
+        securitySchemes: {
+          bearer_auth: {
+            type: :http,
+            scheme: :bearer,
+            bearerFormat: :JWT
+          }
+        }
+      }
     }
   }
 

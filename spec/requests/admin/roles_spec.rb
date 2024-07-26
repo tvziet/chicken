@@ -58,6 +58,7 @@ describe 'Roles Admin' do
     post 'Creates a role' do
       tags 'Admin Interface - Role'
       consumes 'application/json'
+      security [{ bearer_auth: [] }]
       parameter name: :role, in: :body, schema: {
         type: :object,
         properties: {
@@ -129,8 +130,12 @@ describe 'Roles Admin' do
 
     put 'Updates a role' do
       tags 'Admin Interface - Role'
+
       produces 'application/json'
       consumes 'application/json'
+
+      security [{ bearer_auth: [] }]
+
       parameter name: :id, in: :path, type: :string, require: true
       parameter name: :role, in: :body, schema: {
         type: :object,
@@ -175,6 +180,7 @@ describe 'Roles Admin' do
     delete 'Deletes a role' do
       tags 'Admin Interface - Role'
       produces 'application/json'
+      security [{ bearer_auth: [] }]
       parameter name: :id, in: :path, type: :string, require: true
 
       response '200', 'Role deleted' do

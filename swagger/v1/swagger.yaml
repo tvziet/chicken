@@ -79,6 +79,8 @@ paths:
       summary: Creates a role
       tags:
       - Admin Interface - Role
+      security:
+      - bearer_auth: []
       parameters: []
       responses:
         '201':
@@ -150,6 +152,8 @@ paths:
       summary: Updates a role
       tags:
       - Admin Interface - Role
+      security:
+      - bearer_auth: []
       parameters:
       - name: id
         in: path
@@ -190,6 +194,8 @@ paths:
       summary: Deletes a role
       tags:
       - Admin Interface - Role
+      security:
+      - bearer_auth: []
       parameters:
       - name: id
         in: path
@@ -314,3 +320,9 @@ servers:
     productionHost:
       default: example.com
   description: Production server
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
