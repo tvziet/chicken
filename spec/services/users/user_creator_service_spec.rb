@@ -52,5 +52,13 @@ RSpec.describe Users::UserCreatorService, type: :service do
         expect { Users::UserCreatorService.call(updated_user_params.merge(email: '')) }.to change { User.count }.by(0)
       end
     end
+
+    context 'when the user has invalid role' do
+      let(:updated_user_params) { user_params.merge(role_id: 1_000).except(:organization_attributes) }
+
+      it 'can not create an user with the non-exists role' do
+        expect { Users::UserCreatorService.call(updated_user_params) }.to change { User.count }.by(0)
+      end
+    end
   end
 end

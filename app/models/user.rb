@@ -38,7 +38,6 @@ class User < ApplicationRecord
   EMAIL_SYMBOL = '@'.freeze
 
   before_validation :normalize_blank_name_to_nil
-  before_validation :ensure_matching_roles
   before_create :generate_confirmation_token
 
   # Include default devise modules. Others available are:
@@ -76,6 +75,18 @@ class User < ApplicationRecord
     Organization.find(organization_id) if role_name == Role::ORG_USER.to_s && organization_id.present?
   end
 
+  def generate_access_token
+    payload = { user_id: id, jti: jti, sub: id, scp: :user }
+    JWT.encode(payload, ENV['DEVISE_JWT_SECRET_KEY'])
+  end
+
+  # Check role
+  Role::VALID_ROLES.each do |role_name|
+    define_method("#{role_name}?") do
+      role.name == role_name
+    end
+  end
+
   private
 
   def normalize_blank_name_to_nil
@@ -90,9 +101,5 @@ class User < ApplicationRecord
 
   def generate_confirmation_token
     self.confirmation_token = SecureRandom.urlsafe_base64
-  end
-
-  def ensure_matching_roles
-    errors.add(:role_id, I18n.t('api.users.common.not_matching_role')) if Role::REGISTERABLE_ROLES.exclude?(role_name)
   end
 end

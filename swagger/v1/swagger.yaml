@@ -81,12 +81,19 @@ paths:
       - Admin Interface - Role
       security:
       - bearer_auth: []
-      parameters: []
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
       responses:
         '201':
           description: Role created
         '422':
           description: Failure role created
+        '403':
+          description: No permission
       requestBody:
         content:
           application/json:
@@ -161,9 +168,25 @@ paths:
         required: true
         schema:
           type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Role updated
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                required:
+                - errors
         '422':
           description: Failure role updated
           content:
@@ -180,6 +203,8 @@ paths:
                           type: string
                 required:
                 - errors
+        '403':
+          description: No permission
       requestBody:
         content:
           application/json:
@@ -199,7 +224,11 @@ paths:
       parameters:
       - name: id
         in: path
-        require: true
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
         required: true
         schema:
           type: string
@@ -219,6 +248,17 @@ paths:
                 - data
         '404':
           description: Role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                required:
+                - errors
+        '403':
+          description: No permission
           content:
             application/json:
               schema:

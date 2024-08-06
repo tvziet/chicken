@@ -1,6 +1,14 @@
 require 'swagger_helper'
 
 describe 'Roles Admin' do
+  let(:invalid_role_id) { 1_000 }
+  let(:id) { create(:role, name: 'individual_user').id }
+  let(:super_admin_id) { create(:role, name: 'super_admin').id }
+  let(:org_admin_id) { create(:role, name: 'org_admin').id }
+  let(:super_admin_user) { create(:user, role_id: super_admin_id) }
+  let(:org_admin_user) { create(:user, role_id: org_admin_id) }
+  let(:Authorization) { include_auth_headers(super_admin_user)['Authorization'] }
+
   path '/admin/roles' do
     get 'Retrieves all roles' do
       tags 'Admin Interface - Role'
@@ -66,23 +74,46 @@ describe 'Roles Admin' do
         },
         required: %w[name]
       }
-      response '201', 'Role created' do
-        let(:role) do
-          {
-            name: 'individual_user'
-          }
+      parameter name: :Authorization, in: :header, type: :string, required: true
+
+      context 'when the current user is super admin' do
+        context 'when the role is valid' do
+          response '201', 'Role created' do
+            let(:role) do
+              {
+                name: 'individual_user'
+              }
+            end
+            let(:params) { { role: role } }
+            run_test!
+          end
         end
-        let(:params) { { role: role } }
-        run_test!
+
+        context 'when the role is not valid' do
+          response '422', 'Failure role created' do
+            let(:role) do
+              {
+                name: 'teacher'
+              }
+            end
+            let(:params) { { role: role } }
+            run_test!
+          end
+        end
       end
-      response '422', 'Failure role created' do
-        let(:role) do
-          {
-            name: 'teacher'
-          }
+
+      context 'when the current user is not super admin' do
+        let(:Authorization) { include_auth_headers(org_admin_user)['Authorization'] }
+
+        response '403', 'No permission' do
+          let(:role) do
+            {
+              name: 'individual_user'
+            }
+          end
+          let(:params) { { role: role } }
+          run_test!
         end
-        let(:params) { { role: role } }
-        run_test!
       end
     end
   end
@@ -117,13 +148,14 @@ describe 'Roles Admin' do
         let(:id) { create(:role, name: 'individual_user').id }
         run_test!
       end
+
       response '404', 'Role not found' do
         schema type: :object,
           properties: {
             errors: { type: :string }
           },
           required: %w[errors]
-        let(:id) { 'invalid' }
+        let(:id) { invalid_role_id }
         run_test!
       end
     end
@@ -144,36 +176,77 @@ describe 'Roles Admin' do
         },
         required: %w[name]
       }
+      parameter name: :Authorization, in: :header, type: :string, required: true
 
-      response '200', 'Role updated' do
-        let(:id) { create(:role, name: 'individual_user').id }
-        let(:role) do
-          {
-            name: 'org_user'
-          }
-        end
-        let(:params) { { role: role } }
-        run_test!
-      end
-      response '422', 'Failure role updated' do
-        schema type: :object,
-          properties: {
-            errors: {
-              type: :object,
-              properties: {
-                name: { type: :array, items: { type: :string } }
+      context 'when the current user is super admin' do
+        context 'when the role exists' do
+          response '200', 'Role updated' do
+            let(:role) do
+              {
+                name: 'org_user'
               }
-            }
-          },
-          required: %w[errors]
-        let(:id) { create(:role, name: 'individual_user').id }
-        let(:role) do
-          {
-            name: 'teacher'
-          }
+            end
+            let(:params) { { role: role } }
+            run_test!
+          end
         end
-        let(:params) { { role: role } }
-        run_test!
+
+        context 'when the role does not exist' do
+          let(:id) { invalid_role_id }
+
+          response '404', 'Role not found' do
+            schema type: :object,
+              properties: {
+                errors: { type: :string }
+              },
+              required: %w[errors]
+
+            let(:role) do
+              {
+                name: 'org_user'
+              }
+            end
+            let(:params) { { role: role } }
+            run_test!
+          end
+        end
+
+        context 'when the role is not valid' do
+          response '422', 'Failure role updated' do
+            schema type: :object,
+              properties: {
+                errors: {
+                  type: :object,
+                  properties: {
+                    name: { type: :array, items: { type: :string } }
+                  }
+                }
+              },
+              required: %w[errors]
+
+            let(:role) do
+              {
+                name: 'teacher'
+              }
+            end
+            let(:params) { { role: role } }
+            run_test!
+          end
+        end
+      end
+
+      context 'when the current user is not super admin' do
+        let(:Authorization) { include_auth_headers(org_admin_user)['Authorization'] }
+
+        response '403', 'No permission' do
+          let(:role) do
+            {
+              name: 'org_user'
+            }
+          end
+          let(:params) { { role: role } }
+          run_test!
+        end
       end
     end
 
@@ -181,30 +254,52 @@ describe 'Roles Admin' do
       tags 'Admin Interface - Role'
       produces 'application/json'
       security [{ bearer_auth: [] }]
-      parameter name: :id, in: :path, type: :string, require: true
+      parameter name: :id, in: :path, type: :string, required: true
+      parameter name: :Authorization, in: :header, type: :string, required: true
 
-      response '200', 'Role deleted' do
-        schema type: :object,
-          properties: {
-            data: {
-              type: :string,
-              nullable: true,
-              example: nil
-            }
-          },
-          required: %w[data]
+      context 'when the current user is super admin' do
+        context 'when the role exists' do
+          response '200', 'Role deleted' do
+            schema type: :object,
+              properties: {
+                data: {
+                  type: :string,
+                  nullable: true,
+                  example: nil
+                }
+              },
+              required: %w[data]
 
-        let(:id) { create(:role, name: 'individual_user').id }
-        run_test!
+            run_test!
+          end
+        end
+
+        context 'when the role does not exist' do
+          let(:id) { invalid_role_id }
+
+          response '404', 'Role not found' do
+            schema type: :object,
+              properties: {
+                errors: { type: :string }
+              },
+              required: %w[errors]
+
+            run_test!
+          end
+        end
       end
-      response '404', 'Role not found' do
-        schema type: :object,
-          properties: {
-            errors: { type: :string }
-          },
-          required: %w[errors]
-        let(:id) { 'invalid' }
-        run_test!
+
+      context 'when the user is not a super admin' do
+        let(:Authorization) { include_auth_headers(org_admin_user)['Authorization'] }
+
+        response '403', 'No permission' do
+          schema type: :object,
+            properties: {
+              errors: { type: :string }
+            },
+            required: %w[errors]
+          run_test!
+        end
       end
     end
   end

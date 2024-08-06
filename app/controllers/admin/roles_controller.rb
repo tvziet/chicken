@@ -1,6 +1,7 @@
 module Admin
   class RolesController < BaseController
     before_action :authenticate_user!, only: %i[create update destroy]
+    before_action :ensure_super_admin_user, only: %i[create update destroy]
     before_action :set_role, only: %i[show update destroy]
 
     def index
@@ -42,6 +43,10 @@ module Admin
       Role.find(params[:id])
     rescue ActiveRecord::RecordNotFound => e
       handle_record_not_found(e)
+    end
+
+    def ensure_super_admin_user
+      render json: json_with_error(message: I18n.t('admin.roles.common.not_super_admin')), status: :forbidden unless current_user.super_admin?
     end
   end
 end

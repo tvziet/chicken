@@ -30,8 +30,6 @@ en:
         no_change: "There is no change in role."
         organization_registered: "The organization's information has been registered by another user."
         missing_organization_attributes: "Missing organization's attributes when switching role to org user."
-      common:
-        not_matching_role: "The role is not matching. The role can only be individual user or as an user represents as an organization."
     sessions:
       create:
         success: "User was successfully logged in."
