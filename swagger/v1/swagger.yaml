@@ -345,6 +345,53 @@ paths:
                     - pagination
                 required:
                 - data
+  "/api/users":
+    post:
+      summary: Creates a user
+      tags:
+      - Users
+      parameters:
+      - name: X-API-VERSION
+        in: header
+        required: true
+        description: current version of API
+        schema:
+          type: string
+      responses:
+        '201':
+          description: User created
+        '422':
+          description: Invalid request
+        '404':
+          description: Role is not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+                role_id:
+                  type: integer
+                organization_attributes:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    name:
+                      type: string
+                    short_name:
+                      type: string
+              required:
+              - email
+              - password
+              - name
+              - role_id
 servers:
 - url: http://{defaultHost}
   variables:

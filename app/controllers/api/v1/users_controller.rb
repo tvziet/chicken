@@ -3,13 +3,18 @@ module Api
     class UsersController < ApplicationController
       before_action :handle_unauthorized, unless: :current_user, only: %i[me update switch_role]
       before_action :set_role, only: %i[switch_role]
+
       def create
         result = Users::UserCreatorService.call(user_params)
-        return render json: result, status: :unprocessable_entity if result.key?(:errors)
+        unless result.key?(:errors)
+          UserMailer.with(user: result[:data]).verify_user.deliver_later
+          render json: json_with_success(message: I18n.t('api.users.create.success'), data: result[:data]), status: :created
+        end
 
-        UserMailer.with(user: result[:data]).verify_user.deliver_later
+        return render json: result, status: :not_found if result.key?(:errors) &&
+          result[:errors].values.flatten.any? { |msg| msg.include?('does not exist') }
 
-        render json: json_with_success(message: I18n.t('api.users.create.success'), data: result[:data]), status: :created
+        render json: result, status: :unprocessable_entity if result.key?(:errors)
       end
 
       def me

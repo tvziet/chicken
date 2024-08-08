@@ -27,7 +27,7 @@ module Users
         success_response(user)
       end
     rescue ActiveRecord::RecordNotFound => e
-      error_response({ e.model.downcase.to_sym => ['does not exist'] })
+      error_response({ e.model.downcase.to_sym => ['does not exists'] })
     rescue ActiveRecord::RecordInvalid => e
       error_response(e.record.errors.to_hash)
     end

@@ -4,4 +4,8 @@ module ApiHelpers
     token = user.generate_access_token
     { 'Authorization' => "Bearer #{token}" }
   end
+
+  def convert_to_json(response_body)
+    JSON.parse(response_body).with_indifferent_access
+  end
 end
