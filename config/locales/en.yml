@@ -7,9 +7,10 @@ en:
       record_not_found: The %{record} is not found.
       statement_invalid: "The statement is invalid."
   errors:
-    forbidden: Forbidden.
-    missing_confirm_token: Missing confirm token.
-    missing_token: Missing token.
+    forbidden: "Forbidden."
+    missing_confirm_token: "Missing confirm token."
+    missing_token: "Missing token."
+    no_permission: "No permission."
   admin:
     roles:
       create:

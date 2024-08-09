@@ -5,7 +5,7 @@ module Users
 
     def initialize(user, organization_attributes, new_role_id)
       @user = user
-      @organization_attributes = organization_attributes
+      @organization_attributes = organization_attributes.is_a?(Hash) ? organization_attributes : organization_attributes.to_unsafe_h
       @new_role_id = new_role_id
     end
 
@@ -27,15 +27,13 @@ module Users
 
     # Check whether the organization's information has been registered by another user or not
     def organization_registered?
-      Organization.exists?(email: organization_attributes[:email],
-        name: organization_attributes[:name],
-        short_name: organization_attributes[:short_name])
+      Organization.exists?(organization_attributes)
     end
 
     # If the current user already represents an organization, that organization's information will be updated
     def process_update_current_organization
       ActiveRecord::Base.transaction do
-        current_organization.update!(organization_attributes.slice(:email, :name, :short_name))
+        current_organization.update!(organization_attributes)
         user.update!(role_id: new_role_id)
       end
     end

@@ -81,12 +81,7 @@ paths:
       - Admin Interface - Role
       security:
       - bearer_auth: []
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
+      parameters: []
       responses:
         '201':
           description: Role created
@@ -100,10 +95,13 @@ paths:
             schema:
               type: object
               properties:
-                name:
-                  type: string
+                role:
+                  type: object
+                  properties:
+                    name:
+                      type: string
               required:
-              - name
+              - role
   "/admin/roles/{id}":
     get:
       summary: Retrieves a role
@@ -168,11 +166,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
       responses:
         '200':
           description: Role updated
@@ -211,10 +204,13 @@ paths:
             schema:
               type: object
               properties:
-                name:
-                  type: string
+                role:
+                  type: object
+                  properties:
+                    name:
+                      type: string
               required:
-              - name
+              - role
     delete:
       summary: Deletes a role
       tags:
@@ -224,11 +220,6 @@ paths:
       parameters:
       - name: id
         in: path
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
         required: true
         schema:
           type: string
@@ -345,9 +336,41 @@ paths:
                     - pagination
                 required:
                 - data
+  "/api/login":
+    post:
+      summary: Login
+      tags:
+      - Users
+      parameters:
+      - name: X-API-VERSION
+        in: header
+        required: true
+        description: current version of API
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Login successfully
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+              required:
+              - user
   "/api/users":
     post:
-      summary: Creates a user
+      summary: Register
       tags:
       - Users
       parameters:
@@ -392,6 +415,104 @@ paths:
               - password
               - name
               - role_id
+  "/api/me":
+    get:
+      summary: Returns the current user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: X-API-VERSION
+        in: header
+        required: true
+        description: current version of API
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User found
+        '401':
+          description: Unauthorized
+  "/api/current_user/profile":
+    put:
+      summary: Updates the current user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: X-API-VERSION
+        in: header
+        required: true
+        description: current version of API
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User updated
+        '422':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                new_password:
+                  type: string
+                current_password:
+                  type: string
+                email:
+                  type: string
+                name:
+                  type: string
+              required: []
+              dependencies:
+                new_password:
+                - current_password
+  "/api/current_user/switch_role":
+    put:
+      summary: Switches role for the current user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: X-API-VERSION
+        in: header
+        required: true
+        description: current version of API
+        schema:
+          type: string
+      responses:
+        '404':
+          description: Role not found
+        '200':
+          description: Switch role successfully
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                new_role_id:
+                  type: integer
+                organization_attributes:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    name:
+                      type: string
+                    short_name:
+                      type: string
+              required:
+              - new_role_id
 servers:
 - url: http://{defaultHost}
   variables:

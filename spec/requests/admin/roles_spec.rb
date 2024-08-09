@@ -7,6 +7,11 @@ describe 'Roles Admin' do
   let(:org_admin_id) { create(:role, name: 'org_admin').id }
   let(:super_admin_user) { create(:user, role_id: super_admin_id) }
   let(:org_admin_user) { create(:user, role_id: org_admin_id) }
+  let(:role_params) do
+    {
+      name: 'org_user'
+    }
+  end
   let(:Authorization) { include_auth_headers(super_admin_user)['Authorization'] }
 
   path '/admin/roles' do
@@ -67,36 +72,25 @@ describe 'Roles Admin' do
       tags 'Admin Interface - Role'
       consumes 'application/json'
       security [{ bearer_auth: [] }]
-      parameter name: :role, in: :body, schema: {
+      parameter name: :params, in: :body, schema: {
         type: :object,
         properties: {
-          name: { type: :string }
+          role: { type: :object, properties: { name: { type: :string } } }
         },
-        required: %w[name]
+        required: %w[role]
       }
-      parameter name: :Authorization, in: :header, type: :string, required: true
 
       context 'when the current user is super admin' do
         context 'when the role is valid' do
           response '201', 'Role created' do
-            let(:role) do
-              {
-                name: 'individual_user'
-              }
-            end
-            let(:params) { { role: role } }
+            let(:params) { { role: role_params.merge(name: 'individual_user') } }
             run_test!
           end
         end
 
         context 'when the role is not valid' do
           response '422', 'Failure role created' do
-            let(:role) do
-              {
-                name: 'teacher'
-              }
-            end
-            let(:params) { { role: role } }
+            let(:params) { { role: role_params.merge(name: 'teacher') } }
             run_test!
           end
         end
@@ -106,12 +100,7 @@ describe 'Roles Admin' do
         let(:Authorization) { include_auth_headers(org_admin_user)['Authorization'] }
 
         response '403', 'No permission' do
-          let(:role) do
-            {
-              name: 'individual_user'
-            }
-          end
-          let(:params) { { role: role } }
+          let(:params) { { role: role_params.merge(name: 'individual_user') } }
           run_test!
         end
       end
@@ -169,24 +158,18 @@ describe 'Roles Admin' do
       security [{ bearer_auth: [] }]
 
       parameter name: :id, in: :path, type: :string, require: true
-      parameter name: :role, in: :body, schema: {
+      parameter name: :params, in: :body, schema: {
         type: :object,
         properties: {
-          name: { type: :string }
+          role: { type: :object, properties: { name: { type: :string } } }
         },
-        required: %w[name]
+        required: %w[role]
       }
-      parameter name: :Authorization, in: :header, type: :string, required: true
 
       context 'when the current user is super admin' do
         context 'when the role exists' do
           response '200', 'Role updated' do
-            let(:role) do
-              {
-                name: 'org_user'
-              }
-            end
-            let(:params) { { role: role } }
+            let(:params) { { role: role_params } }
             run_test!
           end
         end
@@ -200,13 +183,7 @@ describe 'Roles Admin' do
                 errors: { type: :string }
               },
               required: %w[errors]
-
-            let(:role) do
-              {
-                name: 'org_user'
-              }
-            end
-            let(:params) { { role: role } }
+            let(:params) { { role: role_params } }
             run_test!
           end
         end
@@ -224,12 +201,7 @@ describe 'Roles Admin' do
               },
               required: %w[errors]
 
-            let(:role) do
-              {
-                name: 'teacher'
-              }
-            end
-            let(:params) { { role: role } }
+            let(:params) { { role: role_params.merge(name: 'teacher') } }
             run_test!
           end
         end
@@ -239,12 +211,7 @@ describe 'Roles Admin' do
         let(:Authorization) { include_auth_headers(org_admin_user)['Authorization'] }
 
         response '403', 'No permission' do
-          let(:role) do
-            {
-              name: 'org_user'
-            }
-          end
-          let(:params) { { role: role } }
+          let(:params) { { role: role_params } }
           run_test!
         end
       end
@@ -255,7 +222,6 @@ describe 'Roles Admin' do
       produces 'application/json'
       security [{ bearer_auth: [] }]
       parameter name: :id, in: :path, type: :string, required: true
-      parameter name: :Authorization, in: :header, type: :string, required: true
 
       context 'when the current user is super admin' do
         context 'when the role exists' do

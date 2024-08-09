@@ -46,7 +46,7 @@ module Admin
     end
 
     def ensure_super_admin_user
-      render json: json_with_error(message: I18n.t('admin.roles.common.not_super_admin')), status: :forbidden unless current_user.super_admin?
+      render json: json_with_error(message: I18n.t('errors.no_permission')), status: :forbidden unless current_user.super_admin?
     end
   end
 end

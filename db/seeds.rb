@@ -33,4 +33,11 @@ if Rails.env.development?
   puts 'Creating an organization...'
   organization = Organization.create(name: 'Dream', short_name: 'DR', email: 'dream@co.ltd')
   organization_user.update!(organization_id: organization.id)
+
+  puts 'Creating a super admin...'
+  super_admin_user = User.build(email: 'super_admin@example.com',
+                                name: 'Super Admin',
+                                password: 'p@ssw0rd',
+                                role_id: super_admin_role.id)
+  super_admin_user.save!
 end
